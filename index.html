@@ -1,93 +1,301 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>日本語 Daily Study</title>
+  <meta name="description" content="매일 일본어 학습 앱 - N5~N4">
+  <meta name="theme-color" content="#e74c3c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="data:application/json,%7B%22name%22%3A%22日本語 Daily%22%2C%22short_name%22%3A%22JP Daily%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f5f5f5%22%2C%22theme_color%22%3A%22%23e74c3c%22%7D">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Segoe UI', -apple-system, sans-serif;
+      font-family: 'Noto Sans KR', 'Segoe UI', sans-serif;
       background: #f5f5f5;
       color: #333;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      padding-bottom: 70px;
     }
 
     header {
       background: linear-gradient(135deg, #e74c3c, #c0392b);
       color: white;
-      width: 100%;
-      padding: 1.5rem;
+      padding: 1.2rem 1rem 1rem;
       text-align: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
     }
 
-    header h1 { font-size: 1.8rem; }
-    header p { opacity: 0.9; margin-top: 0.3rem; font-size: 0.95rem; }
+    header h1 { font-size: 1.5rem; }
+    header .subtitle { opacity: 0.9; font-size: 0.85rem; margin-top: 0.2rem; }
+    header .date { opacity: 0.8; font-size: 0.75rem; margin-top: 0.3rem; }
 
-    main {
-      max-width: 600px;
-      width: 100%;
-      padding: 1.5rem;
+    /* Tabs */
+    .tab-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      display: flex;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+      z-index: 100;
     }
 
+    .tab-bar button {
+      flex: 1;
+      border: none;
+      background: none;
+      padding: 0.6rem 0;
+      font-size: 0.7rem;
+      color: #999;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      font-family: inherit;
+    }
+
+    .tab-bar button.active { color: #e74c3c; }
+    .tab-bar button .tab-icon { font-size: 1.3rem; }
+
+    .tab-content { display: none; padding: 1rem; max-width: 600px; margin: 0 auto; }
+    .tab-content.active { display: block; }
+
+    /* Cards */
     .card {
       background: white;
       border-radius: 12px;
-      padding: 2rem;
-      margin-bottom: 1.2rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      color: #888;
+      margin-bottom: 0.8rem;
+      font-weight: 500;
+    }
+
+    /* Romaji style */
+    .romaji {
+      font-size: 0.8rem;
+      color: #999;
+      font-style: italic;
+      margin-top: 2px;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    /* Vocab flashcard */
+    .flashcard {
       text-align: center;
+      cursor: pointer;
+      user-select: none;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       transition: transform 0.2s;
     }
 
-    .card:hover { transform: translateY(-2px); }
+    .flashcard:active { transform: scale(0.98); }
 
-    .word { font-size: 2.5rem; font-weight: bold; color: #e74c3c; }
-    .reading { font-size: 1.3rem; color: #888; margin: 0.5rem 0; }
-    .meaning { font-size: 1.1rem; color: #555; }
+    .flashcard .jp {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #e74c3c;
+    }
 
-    .btn {
-      display: inline-block;
+    .flashcard .reading {
+      font-size: 1.1rem;
+      color: #e74c3c;
+      margin-top: 0.3rem;
+    }
+
+    .flashcard .romaji-reading {
+      font-size: 0.9rem;
+      color: #999;
+      font-style: italic;
+      margin-top: 0.1rem;
+    }
+
+    .flashcard .meaning {
+      font-size: 1.1rem;
+      color: #555;
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+
+    .flashcard .example-section {
+      margin-top: 0.8rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid #eee;
+      font-size: 0.9rem;
+    }
+
+    .flashcard .example-jp { color: #333; font-weight: 500; }
+    .flashcard .example-romaji { color: #999; font-style: italic; font-size: 0.8rem; margin-top: 2px; }
+    .flashcard .example-ko { color: #777; font-size: 0.85rem; margin-top: 2px; }
+
+    .flashcard-hint {
+      font-size: 0.75rem;
+      color: #bbb;
+      margin-top: 0.5rem;
+    }
+
+    .card-nav {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .card-nav button {
       background: #e74c3c;
       color: white;
       border: none;
-      padding: 0.8rem 2rem;
+      padding: 0.5rem 1.2rem;
       border-radius: 8px;
-      font-size: 1rem;
       cursor: pointer;
-      margin-top: 1rem;
-      transition: background 0.2s;
-    }
-
-    .btn:hover { background: #c0392b; }
-
-    .date {
+      font-family: inherit;
       font-size: 0.85rem;
-      color: #aaa;
-      margin-bottom: 0.5rem;
     }
 
-    #quiz-section { margin-top: 1rem; }
+    .card-nav button:disabled { background: #ddd; }
 
+    .card-counter {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #aaa;
+      margin-top: 0.3rem;
+    }
+
+    /* Grammar */
+    .grammar-card { margin-bottom: 0.8rem; }
+
+    .grammar-card .grammar-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #e74c3c;
+    }
+
+    .grammar-card .grammar-structure {
+      font-size: 0.85rem;
+      color: #666;
+      margin: 0.3rem 0;
+      background: #fef5f5;
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+    }
+
+    .grammar-card .grammar-desc {
+      font-size: 0.85rem;
+      color: #555;
+      margin: 0.4rem 0;
+    }
+
+    .grammar-example {
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 0.6rem;
+      margin-top: 0.4rem;
+    }
+
+    .grammar-example .ex-jp { font-weight: 500; color: #333; }
+    .grammar-example .ex-romaji { color: #999; font-style: italic; font-size: 0.8rem; margin-top: 2px; }
+    .grammar-example .ex-ko { color: #777; font-size: 0.85rem; margin-top: 2px; }
+
+    /* Checklist */
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #f0f0f0;
+      cursor: pointer;
+    }
+
+    .checklist-item:last-child { border-bottom: none; }
+
+    .checklist-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: #e74c3c;
+      cursor: pointer;
+    }
+
+    .checklist-item.done label { text-decoration: line-through; color: #bbb; }
+    .checklist-item label { cursor: pointer; font-size: 0.9rem; }
+
+    /* Weekly tracker */
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.3rem;
+      text-align: center;
+    }
+
+    .week-day {
+      padding: 0.4rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+    }
+
+    .week-day .day-label { color: #999; font-size: 0.65rem; }
+    .week-day .day-num { font-weight: 700; font-size: 0.9rem; margin: 0.2rem 0; }
+    .week-day.today { background: #fef5f5; border: 2px solid #e74c3c; }
+    .week-day.done { background: #eafaf1; }
+    .week-day.done .day-num { color: #27ae60; }
+
+    /* Briefing */
+    .briefing {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: #555;
+    }
+
+    .briefing strong { color: #333; }
+    .briefing .highlight { color: #e74c3c; font-weight: 500; }
+
+    /* Review summary */
+    .review-word {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 0.9rem;
+    }
+
+    .review-word:last-child { border-bottom: none; }
+    .review-word .rw-jp { font-weight: 700; color: #e74c3c; }
+    .review-word .rw-romaji { color: #999; font-style: italic; font-size: 0.8rem; }
+    .review-word .rw-ko { color: #666; }
+
+    /* Quiz */
     .quiz-options {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.8rem;
-      margin-top: 1rem;
+      gap: 0.6rem;
+      margin-top: 0.8rem;
     }
 
     .quiz-option {
-      padding: 0.8rem;
-      border: 2px solid #ddd;
+      padding: 0.7rem;
+      border: 2px solid #eee;
       border-radius: 8px;
       background: white;
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 0.9rem;
+      font-family: inherit;
       transition: all 0.2s;
     }
 
@@ -95,164 +303,718 @@
     .quiz-option.correct { border-color: #27ae60; background: #eafaf1; }
     .quiz-option.wrong { border-color: #e74c3c; background: #fdecea; }
 
-    .score { font-size: 1.2rem; font-weight: bold; color: #e74c3c; }
+    .quiz-word {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #e74c3c;
+      text-align: center;
+      margin: 0.5rem 0;
+    }
+
+    .quiz-result {
+      text-align: center;
+      font-weight: 700;
+      margin-top: 0.5rem;
+    }
+
+    .quiz-score {
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #e74c3c;
+      margin-top: 0.5rem;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 0.5rem;
+    }
+
+    .btn:hover { background: #c0392b; }
 
     .hidden { display: none; }
+
+    .day-selector {
+      display: flex;
+      gap: 0.3rem;
+      margin-bottom: 0.8rem;
+      overflow-x: auto;
+    }
+
+    .day-selector button {
+      padding: 0.4rem 0.8rem;
+      border: 2px solid #eee;
+      border-radius: 20px;
+      background: white;
+      font-size: 0.8rem;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+
+    .day-selector button.active {
+      background: #e74c3c;
+      color: white;
+      border-color: #e74c3c;
+    }
+
+    .section-divider {
+      height: 1px;
+      background: #eee;
+      margin: 0.8rem 0;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>🇯🇵 日本語 Daily Study</h1>
-    <p>毎日の日本語学習</p>
-  </header>
 
-  <main>
-    <div class="date" id="today-date"></div>
+<header>
+  <h1>日本語 Daily Study</h1>
+  <div class="subtitle">매일 일본어 - N5~N4</div>
+  <div class="date" id="header-date"></div>
+</header>
 
-    <!-- Today's Word -->
-    <div class="card">
-      <h2 style="margin-bottom: 1rem; color: #666;">📖 오늘의 단어</h2>
-      <div class="word" id="word"></div>
-      <div class="reading" id="reading"></div>
-      <div class="meaning" id="meaning"></div>
+<!-- Tab contents -->
+<div class="tab-content active" id="tab-morning">
+  <div class="card">
+    <div class="card-title">Good Morning!</div>
+    <div class="briefing" id="morning-briefing"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">오늘의 체크리스트</div>
+    <div id="morning-checklist"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">주간 트래커</div>
+    <div class="week-grid" id="week-tracker"></div>
+  </div>
+</div>
+
+<div class="tab-content" id="tab-study">
+  <div class="day-selector" id="day-selector"></div>
+
+  <div class="card">
+    <div class="card-title">단어 플래시카드</div>
+    <div class="flashcard" id="flashcard" onclick="toggleFlashcard()"></div>
+    <div class="card-counter" id="vocab-counter"></div>
+    <div class="card-nav">
+      <button onclick="prevCard()">이전</button>
+      <button onclick="nextCard()">다음</button>
     </div>
+  </div>
 
-    <!-- Quiz Section -->
-    <div class="card" id="quiz-section">
-      <h2 style="margin-bottom: 0.5rem; color: #666;">🧠 퀴즈</h2>
-      <p id="quiz-question" style="font-size: 1.8rem; font-weight: bold; color: #e74c3c;"></p>
-      <div class="quiz-options" id="quiz-options"></div>
-      <p id="quiz-result" style="margin-top: 1rem; font-weight: bold;" class="hidden"></p>
-      <button class="btn hidden" id="next-btn" onclick="nextQuiz()">다음 문제</button>
-      <div class="score" id="score" style="margin-top: 0.8rem;"></div>
+  <div class="card">
+    <div class="card-title">문법</div>
+    <div id="grammar-section"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">퀴즈</div>
+    <div id="quiz-section"></div>
+  </div>
+</div>
+
+<div class="tab-content" id="tab-evening">
+  <div class="card">
+    <div class="card-title">오늘 배운 단어 복습</div>
+    <div id="review-words"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">오늘 배운 문법 복습</div>
+    <div id="review-grammar"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">저녁 체크리스트</div>
+    <div id="evening-checklist"></div>
+  </div>
+</div>
+
+<div class="tab-content" id="tab-record">
+  <div class="card">
+    <div class="card-title">학습 기록</div>
+    <div id="record-summary"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">주간 달성률</div>
+    <div id="record-weekly"></div>
+  </div>
+</div>
+
+<!-- Tab bar -->
+<div class="tab-bar">
+  <button class="active" onclick="switchTab('morning', this)">
+    <span class="tab-icon">&#x1F305;</span>아침
+  </button>
+  <button onclick="switchTab('study', this)">
+    <span class="tab-icon">&#x1F4DA;</span>학습
+  </button>
+  <button onclick="switchTab('evening', this)">
+    <span class="tab-icon">&#x1F319;</span>저녁
+  </button>
+  <button onclick="switchTab('record', this)">
+    <span class="tab-icon">&#x1F4CA;</span>기록
+  </button>
+</div>
+
+<script>
+// ============================================================
+// DATA: VOCAB_BANK — 7 Day-sets, 5 words each = 35 words
+// ============================================================
+const VOCAB_BANK = [
+  // Day 1: 인사/기본 표현
+  [
+    { jp: "おはよう", reading: "おはよう (ohayou)", meaning: "좋은 아침", example: "おはようございます。", exampleRomaji: "ohayou gozaimasu.", exampleKo: "좋은 아침입니다." },
+    { jp: "ありがとう", reading: "ありがとう (arigatou)", meaning: "감사합니다", example: "ありがとうございます。", exampleRomaji: "arigatou gozaimasu.", exampleKo: "감사합니다." },
+    { jp: "すみません", reading: "すみません (sumimasen)", meaning: "죄송합니다 / 실례합니다", example: "すみません、駅はどこですか。", exampleRomaji: "sumimasen, eki wa doko desu ka.", exampleKo: "실례합니다, 역은 어디인가요?" },
+    { jp: "こんにちは", reading: "こんにちは (konnichiwa)", meaning: "안녕하세요 (낮)", example: "こんにちは、元気ですか。", exampleRomaji: "konnichiwa, genki desu ka.", exampleKo: "안녕하세요, 잘 지내세요?" },
+    { jp: "さようなら", reading: "さようなら (sayounara)", meaning: "안녕히 가세요", example: "さようなら、また明日。", exampleRomaji: "sayounara, mata ashita.", exampleKo: "안녕히, 내일 또 봐요." },
+  ],
+  // Day 2: 학교/공부
+  [
+    { jp: "学校", reading: "がっこう (gakkou)", meaning: "학교", example: "学校に行きます。", exampleRomaji: "gakkou ni ikimasu.", exampleKo: "학교에 갑니다." },
+    { jp: "先生", reading: "せんせい (sensei)", meaning: "선생님", example: "先生は優しいです。", exampleRomaji: "sensei wa yasashii desu.", exampleKo: "선생님은 친절합니다." },
+    { jp: "勉強", reading: "べんきょう (benkyou)", meaning: "공부", example: "日本語を勉強します。", exampleRomaji: "nihongo wo benkyou shimasu.", exampleKo: "일본어를 공부합니다." },
+    { jp: "学生", reading: "がくせい (gakusei)", meaning: "학생", example: "私は学生です。", exampleRomaji: "watashi wa gakusei desu.", exampleKo: "저는 학생입니다." },
+    { jp: "質問", reading: "しつもん (shitsumon)", meaning: "질문", example: "質問がありますか。", exampleRomaji: "shitsumon ga arimasu ka.", exampleKo: "질문이 있습니까?" },
+  ],
+  // Day 3: 음식/음료
+  [
+    { jp: "食べ物", reading: "たべもの (tabemono)", meaning: "음식", example: "好きな食べ物は何ですか。", exampleRomaji: "suki na tabemono wa nan desu ka.", exampleKo: "좋아하는 음식은 뭔가요?" },
+    { jp: "飲み物", reading: "のみもの (nomimono)", meaning: "음료", example: "飲み物を買います。", exampleRomaji: "nomimono wo kaimasu.", exampleKo: "음료를 삽니다." },
+    { jp: "水", reading: "みず (mizu)", meaning: "물", example: "水をください。", exampleRomaji: "mizu wo kudasai.", exampleKo: "물을 주세요." },
+    { jp: "美味しい", reading: "おいしい (oishii)", meaning: "맛있는", example: "この料理は美味しいです。", exampleRomaji: "kono ryouri wa oishii desu.", exampleKo: "이 요리는 맛있습니다." },
+    { jp: "食べる", reading: "たべる (taberu)", meaning: "먹다", example: "朝ごはんを食べます。", exampleRomaji: "asagohan wo tabemasu.", exampleKo: "아침밥을 먹습니다." },
+  ],
+  // Day 4: 장소/교통
+  [
+    { jp: "駅", reading: "えき (eki)", meaning: "역", example: "駅はどこですか。", exampleRomaji: "eki wa doko desu ka.", exampleKo: "역은 어디입니까?" },
+    { jp: "電車", reading: "でんしゃ (densha)", meaning: "전철", example: "電車で会社に行きます。", exampleRomaji: "densha de kaisha ni ikimasu.", exampleKo: "전철로 회사에 갑니다." },
+    { jp: "病院", reading: "びょういん (byouin)", meaning: "병원", example: "病院に行きたいです。", exampleRomaji: "byouin ni ikitai desu.", exampleKo: "병원에 가고 싶습니다." },
+    { jp: "図書館", reading: "としょかん (toshokan)", meaning: "도서관", example: "図書館で本を読みます。", exampleRomaji: "toshokan de hon wo yomimasu.", exampleKo: "도서관에서 책을 읽습니다." },
+    { jp: "会社", reading: "かいしゃ (kaisha)", meaning: "회사", example: "会社は九時からです。", exampleRomaji: "kaisha wa kuji kara desu.", exampleKo: "회사는 9시부터입니다." },
+  ],
+  // Day 5: 일상/취미
+  [
+    { jp: "仕事", reading: "しごと (shigoto)", meaning: "일, 직업", example: "仕事は楽しいです。", exampleRomaji: "shigoto wa tanoshii desu.", exampleKo: "일은 즐겁습니다." },
+    { jp: "散歩", reading: "さんぽ (sanpo)", meaning: "산책", example: "公園を散歩します。", exampleRomaji: "kouen wo sanpo shimasu.", exampleKo: "공원을 산책합니다." },
+    { jp: "映画", reading: "えいが (eiga)", meaning: "영화", example: "映画を見ます。", exampleRomaji: "eiga wo mimasu.", exampleKo: "영화를 봅니다." },
+    { jp: "音楽", reading: "おんがく (ongaku)", meaning: "음악", example: "音楽を聞きます。", exampleRomaji: "ongaku wo kikimasu.", exampleKo: "음악을 듣습니다." },
+    { jp: "旅行", reading: "りょこう (ryokou)", meaning: "여행", example: "日本に旅行に行きます。", exampleRomaji: "nihon ni ryokou ni ikimasu.", exampleKo: "일본에 여행을 갑니다." },
+  ],
+  // Day 6: 감정/형용사
+  [
+    { jp: "大切", reading: "たいせつ (taisetsu)", meaning: "소중한", example: "友達は大切です。", exampleRomaji: "tomodachi wa taisetsu desu.", exampleKo: "친구는 소중합니다." },
+    { jp: "簡単", reading: "かんたん (kantan)", meaning: "간단한", example: "この問題は簡単です。", exampleRomaji: "kono mondai wa kantan desu.", exampleKo: "이 문제는 간단합니다." },
+    { jp: "便利", reading: "べんり (benri)", meaning: "편리한", example: "スマホは便利です。", exampleRomaji: "sumaho wa benri desu.", exampleKo: "스마트폰은 편리합니다." },
+    { jp: "気持ち", reading: "きもち (kimochi)", meaning: "기분, 감정", example: "気持ちがいいです。", exampleRomaji: "kimochi ga ii desu.", exampleKo: "기분이 좋습니다." },
+    { jp: "楽しい", reading: "たのしい (tanoshii)", meaning: "즐거운", example: "パーティーは楽しいです。", exampleRomaji: "paatii wa tanoshii desu.", exampleKo: "파티는 즐겁습니다." },
+  ],
+  // Day 7: 사람/관계
+  [
+    { jp: "友達", reading: "ともだち (tomodachi)", meaning: "친구", example: "友達に会います。", exampleRomaji: "tomodachi ni aimasu.", exampleKo: "친구를 만납니다." },
+    { jp: "家族", reading: "かぞく (kazoku)", meaning: "가족", example: "家族は四人です。", exampleRomaji: "kazoku wa yonin desu.", exampleKo: "가족은 4명입니다." },
+    { jp: "約束", reading: "やくそく (yakusoku)", meaning: "약속", example: "明日の約束があります。", exampleRomaji: "ashita no yakusoku ga arimasu.", exampleKo: "내일 약속이 있습니다." },
+    { jp: "名前", reading: "なまえ (namae)", meaning: "이름", example: "お名前は何ですか。", exampleRomaji: "onamae wa nan desu ka.", exampleKo: "이름이 뭔가요?" },
+    { jp: "電話", reading: "でんわ (denwa)", meaning: "전화", example: "電話をかけます。", exampleRomaji: "denwa wo kakemasu.", exampleKo: "전화를 겁니다." },
+  ],
+];
+
+// ============================================================
+// DATA: GRAMMAR_BANK — 7 grammars, 2 examples each = 14 examples
+// ============================================================
+const GRAMMAR_BANK = [
+  {
+    title: "~です (desu)",
+    structure: "명사 + です(desu)",
+    description: "~입니다. 정중한 긍정 표현",
+    examples: [
+      { jp: "学生です。", romaji: "gakusei desu.", ko: "학생입니다." },
+      { jp: "日本人です。", romaji: "nihonjin desu.", ko: "일본인입니다." },
+    ]
+  },
+  {
+    title: "~ます (masu)",
+    structure: "동사ます형 + ます(masu)",
+    description: "정중한 동사 표현 (현재/미래)",
+    examples: [
+      { jp: "毎日勉強します。", romaji: "mainichi benkyou shimasu.", ko: "매일 공부합니다." },
+      { jp: "朝ごはんを食べます。", romaji: "asagohan wo tabemasu.", ko: "아침밥을 먹습니다." },
+    ]
+  },
+  {
+    title: "~ません (masen)",
+    structure: "동사ます형 + ません(masen)",
+    description: "정중한 부정 표현",
+    examples: [
+      { jp: "肉を食べません。", romaji: "niku wo tabemasen.", ko: "고기를 먹지 않습니다." },
+      { jp: "お酒を飲みません。", romaji: "osake wo nomimasen.", ko: "술을 마시지 않습니다." },
+    ]
+  },
+  {
+    title: "~がある/いる (ga aru/iru)",
+    structure: "명사 + がある(ga aru) [사물] / がいる(ga iru) [생물]",
+    description: "~이/가 있다",
+    examples: [
+      { jp: "時間があります。", romaji: "jikan ga arimasu.", ko: "시간이 있습니다." },
+      { jp: "猫がいます。", romaji: "neko ga imasu.", ko: "고양이가 있습니다." },
+    ]
+  },
+  {
+    title: "~たい (tai)",
+    structure: "동사ます형 + たい(tai)",
+    description: "~하고 싶다",
+    examples: [
+      { jp: "日本に行きたいです。", romaji: "nihon ni ikitai desu.", ko: "일본에 가고 싶습니다." },
+      { jp: "寿司を食べたいです。", romaji: "sushi wo tabetai desu.", ko: "초밥을 먹고 싶습니다." },
+    ]
+  },
+  {
+    title: "~てください (te kudasai)",
+    structure: "동사て형 + ください(kudasai)",
+    description: "~해 주세요 (부탁)",
+    examples: [
+      { jp: "ここに書いてください。", romaji: "koko ni kaite kudasai.", ko: "여기에 써 주세요." },
+      { jp: "もう一度言ってください。", romaji: "mou ichido itte kudasai.", ko: "한 번 더 말해 주세요." },
+    ]
+  },
+  {
+    title: "~から (kara)",
+    structure: "문장/명사 + から(kara)",
+    description: "~부터 / ~때문에",
+    examples: [
+      { jp: "九時から始まります。", romaji: "kuji kara hajimarimasu.", ko: "9시부터 시작합니다." },
+      { jp: "暑いから窓を開けます。", romaji: "atsui kara mado wo akemasu.", ko: "더우니까 창문을 엽니다." },
+    ]
+  },
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let currentDay = 0;
+let currentCardIndex = 0;
+let cardFlipped = false;
+let quizCorrect = 0;
+let quizTotal = 0;
+let currentQuizWord = null;
+
+// ============================================================
+// UTILITY
+// ============================================================
+function getToday() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function getDayOfWeek() {
+  return new Date().getDay(); // 0=Sun
+}
+
+function getStorageKey(key) {
+  return `jp_daily_${key}`;
+}
+
+function loadChecklist(key) {
+  try { return JSON.parse(localStorage.getItem(getStorageKey(key))) || {}; } catch { return {}; }
+}
+
+function saveChecklist(key, data) {
+  localStorage.setItem(getStorageKey(key), JSON.stringify(data));
+}
+
+function loadRecord() {
+  try { return JSON.parse(localStorage.getItem(getStorageKey('record'))) || {}; } catch { return {}; }
+}
+
+function saveRecord(data) {
+  localStorage.setItem(getStorageKey('record'), JSON.stringify(data));
+}
+
+function markTodayDone() {
+  const rec = loadRecord();
+  rec[getToday()] = true;
+  saveRecord(rec);
+}
+
+// ============================================================
+// TAB SWITCHING
+// ============================================================
+function switchTab(tabName, btn) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-bar button').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tabName).classList.add('active');
+  btn.classList.add('active');
+
+  if (tabName === 'morning') renderMorningBriefing();
+  if (tabName === 'study') renderStudy();
+  if (tabName === 'evening') renderEvening();
+  if (tabName === 'record') renderRecord();
+}
+
+// ============================================================
+// RENDER: Header date
+// ============================================================
+function renderHeaderDate() {
+  const d = new Date();
+  const opts = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' };
+  document.getElementById('header-date').textContent = d.toLocaleDateString('ko-KR', opts);
+}
+
+// ============================================================
+// RENDER: Morning Briefing
+// ============================================================
+function renderMorningBriefing() {
+  const dayWords = VOCAB_BANK[currentDay];
+  const dayGrammar = GRAMMAR_BANK[currentDay];
+  const wordList = dayWords.map(w => {
+    const romaji = w.reading.match(/\(([^)]+)\)/);
+    const r = romaji ? romaji[1] : '';
+    return `<span class="highlight">${w.jp}(${r})</span>`;
+  }).join(', ');
+
+  const el = document.getElementById('morning-briefing');
+  el.innerHTML = `
+    <p>오늘은 <strong>Day ${currentDay + 1}</strong>입니다.</p>
+    <p style="margin-top:0.4rem">오늘 배울 단어: ${wordList}</p>
+    <p style="margin-top:0.4rem">오늘 배울 문법: <span class="highlight">${dayGrammar.title}</span> — ${dayGrammar.description}</p>
+    <p style="margin-top:0.6rem; color:#999; font-size:0.8rem">학습 탭에서 단어와 문법을 공부하고, 저녁에 복습하세요!</p>
+  `;
+
+  renderMorningChecklist();
+  renderWeekTracker();
+}
+
+// ============================================================
+// RENDER: Morning Checklist
+// ============================================================
+function renderMorningChecklist() {
+  const items = [
+    { id: 'vocab', label: '단어 5개 학습하기' },
+    { id: 'grammar', label: '문법 1개 학습하기' },
+    { id: 'quiz', label: '퀴즈 풀기' },
+    { id: 'review', label: '저녁 복습하기' },
+  ];
+  renderChecklistTo('morning-checklist', 'morning_' + getToday(), items);
+}
+
+function renderChecklistTo(containerId, storageKey, items) {
+  const saved = loadChecklist(storageKey);
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  items.forEach(item => {
+    const checked = saved[item.id] || false;
+    const div = document.createElement('div');
+    div.className = 'checklist-item' + (checked ? ' done' : '');
+    div.innerHTML = `<input type="checkbox" id="chk_${storageKey}_${item.id}" ${checked ? 'checked' : ''}><label for="chk_${storageKey}_${item.id}">${item.label}</label>`;
+    div.querySelector('input').addEventListener('change', function() {
+      const data = loadChecklist(storageKey);
+      data[item.id] = this.checked;
+      saveChecklist(storageKey, data);
+      div.classList.toggle('done', this.checked);
+
+      // Check if all done
+      const allDone = items.every(it => loadChecklist(storageKey)[it.id]);
+      if (allDone) markTodayDone();
+      renderWeekTracker();
+    });
+    container.appendChild(div);
+  });
+}
+
+// ============================================================
+// RENDER: Week Tracker
+// ============================================================
+function renderWeekTracker() {
+  const container = document.getElementById('week-tracker');
+  const today = new Date();
+  const dayOfWeek = today.getDay();
+  const record = loadRecord();
+  const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+
+  container.innerHTML = '';
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - dayOfWeek + i);
+    const dateStr = d.toISOString().slice(0, 10);
+    const isToday = dateStr === getToday();
+    const isDone = record[dateStr] || false;
+
+    const div = document.createElement('div');
+    div.className = 'week-day' + (isToday ? ' today' : '') + (isDone ? ' done' : '');
+    div.innerHTML = `<div class="day-label">${dayNames[i]}</div><div class="day-num">${d.getDate()}</div>`;
+    container.appendChild(div);
+  }
+}
+
+// ============================================================
+// RENDER: Study Tab
+// ============================================================
+function renderStudy() {
+  renderDaySelector();
+  renderVocab();
+  renderGrammar();
+  renderQuiz();
+}
+
+function renderDaySelector() {
+  const container = document.getElementById('day-selector');
+  container.innerHTML = '';
+  for (let i = 0; i < 7; i++) {
+    const btn = document.createElement('button');
+    btn.textContent = `Day ${i + 1}`;
+    btn.className = i === currentDay ? 'active' : '';
+    btn.onclick = () => {
+      currentDay = i;
+      currentCardIndex = 0;
+      cardFlipped = false;
+      renderStudy();
+    };
+    container.appendChild(btn);
+  }
+}
+
+// ============================================================
+// RENDER: Vocab Flashcard
+// ============================================================
+function renderVocab() {
+  const words = VOCAB_BANK[currentDay];
+  const w = words[currentCardIndex];
+  const fc = document.getElementById('flashcard');
+
+  const readingParts = w.reading.match(/^(.+?)\s*\(([^)]+)\)$/);
+  const hiragana = readingParts ? readingParts[1] : w.reading;
+  const romaji = readingParts ? readingParts[2] : '';
+
+  if (!cardFlipped) {
+    fc.innerHTML = `
+      <div class="jp">${w.jp}</div>
+      <div class="reading">${hiragana}</div>
+      <div class="romaji-reading">${romaji}</div>
+      <div class="flashcard-hint">탭하면 뜻 보기</div>
+    `;
+  } else {
+    fc.innerHTML = `
+      <div class="jp">${w.jp}</div>
+      <div class="reading">${hiragana}</div>
+      <div class="romaji-reading">${romaji}</div>
+      <div class="meaning">${w.meaning}</div>
+      <div class="example-section">
+        <div class="example-jp">${w.example}</div>
+        <div class="example-romaji">${w.exampleRomaji}</div>
+        <div class="example-ko">${w.exampleKo}</div>
+      </div>
+    `;
+  }
+
+  document.getElementById('vocab-counter').textContent = `${currentCardIndex + 1} / ${words.length}`;
+}
+
+function toggleFlashcard() {
+  cardFlipped = !cardFlipped;
+  renderVocab();
+}
+
+function prevCard() {
+  const words = VOCAB_BANK[currentDay];
+  if (currentCardIndex > 0) {
+    currentCardIndex--;
+    cardFlipped = false;
+    renderVocab();
+  }
+}
+
+function nextCard() {
+  const words = VOCAB_BANK[currentDay];
+  if (currentCardIndex < words.length - 1) {
+    currentCardIndex++;
+    cardFlipped = false;
+    renderVocab();
+  }
+}
+
+// ============================================================
+// RENDER: Grammar
+// ============================================================
+function renderGrammar() {
+  const g = GRAMMAR_BANK[currentDay];
+  const container = document.getElementById('grammar-section');
+
+  let examplesHtml = g.examples.map(ex => `
+    <div class="grammar-example">
+      <div class="ex-jp">${ex.jp}</div>
+      <div class="ex-romaji">${ex.romaji}</div>
+      <div class="ex-ko">${ex.ko}</div>
     </div>
-  </main>
+  `).join('');
 
-  <script>
-    // Word database
-    const words = [
-      { word: "勉強", reading: "べんきょう", meaning: "공부" },
-      { word: "先生", reading: "せんせい", meaning: "선생님" },
-      { word: "学校", reading: "がっこう", meaning: "학교" },
-      { word: "友達", reading: "ともだち", meaning: "친구" },
-      { word: "天気", reading: "てんき", meaning: "날씨" },
-      { word: "食べ物", reading: "たべもの", meaning: "음식" },
-      { word: "飲み物", reading: "のみもの", meaning: "음료" },
-      { word: "電車", reading: "でんしゃ", meaning: "전철" },
-      { word: "図書館", reading: "としょかん", meaning: "도서관" },
-      { word: "病院", reading: "びょういん", meaning: "병원" },
-      { word: "会社", reading: "かいしゃ", meaning: "회사" },
-      { word: "仕事", reading: "しごと", meaning: "일, 직업" },
-      { word: "散歩", reading: "さんぽ", meaning: "산책" },
-      { word: "旅行", reading: "りょこう", meaning: "여행" },
-      { word: "映画", reading: "えいが", meaning: "영화" },
-      { word: "音楽", reading: "おんがく", meaning: "음악" },
-      { word: "写真", reading: "しゃしん", meaning: "사진" },
-      { word: "新聞", reading: "しんぶん", meaning: "신문" },
-      { word: "手紙", reading: "てがみ", meaning: "편지" },
-      { word: "約束", reading: "やくそく", meaning: "약속" },
-      { word: "練習", reading: "れんしゅう", meaning: "연습" },
-      { word: "準備", reading: "じゅんび", meaning: "준비" },
-      { word: "質問", reading: "しつもん", meaning: "질문" },
-      { word: "説明", reading: "せつめい", meaning: "설명" },
-      { word: "経験", reading: "けいけん", meaning: "경험" },
-      { word: "意味", reading: "いみ", meaning: "의미" },
-      { word: "気持ち", reading: "きもち", meaning: "기분, 감정" },
-      { word: "大切", reading: "たいせつ", meaning: "소중한" },
-      { word: "簡単", reading: "かんたん", meaning: "간단한" },
-      { word: "便利", reading: "べんり", meaning: "편리한" },
-    ];
+  container.innerHTML = `
+    <div class="grammar-card">
+      <div class="grammar-title">${g.title}</div>
+      <div class="grammar-structure">${g.structure}</div>
+      <div class="grammar-desc">${g.description}</div>
+      ${examplesHtml}
+    </div>
+  `;
+}
 
-    let correctCount = 0;
-    let totalCount = 0;
-    let currentQuizWord = null;
+// ============================================================
+// RENDER: Quiz
+// ============================================================
+function renderQuiz() {
+  const words = VOCAB_BANK[currentDay];
+  const idx = Math.floor(Math.random() * words.length);
+  currentQuizWord = words[idx];
 
-    // Get today's word based on date
-    function getTodayIndex() {
-      const today = new Date();
-      const start = new Date(2025, 0, 1);
-      const diff = Math.floor((today - start) / (1000 * 60 * 60 * 24));
-      return diff % words.length;
-    }
+  const options = [currentQuizWord.meaning];
+  const allWords = VOCAB_BANK.flat();
+  while (options.length < 4) {
+    const rand = allWords[Math.floor(Math.random() * allWords.length)].meaning;
+    if (!options.includes(rand)) options.push(rand);
+  }
+  options.sort(() => Math.random() - 0.5);
 
-    // Display today's date
-    function showDate() {
-      const today = new Date();
-      const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
-      document.getElementById('today-date').textContent = today.toLocaleDateString('ja-JP', options);
-    }
+  const container = document.getElementById('quiz-section');
+  container.innerHTML = `
+    <div class="quiz-word">${currentQuizWord.jp}</div>
+    <div class="quiz-options" id="quiz-options">
+      ${options.map(o => `<button class="quiz-option" onclick="checkQuizAnswer(this, '${o.replace(/'/g, "\\'")}')">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-result hidden" id="quiz-result"></div>
+    <button class="btn hidden" id="quiz-next" onclick="renderQuiz()">다음 문제</button>
+    <div class="quiz-score" id="quiz-score">${quizTotal > 0 ? quizCorrect + ' / ' + quizTotal + ' 정답' : ''}</div>
+  `;
+}
 
-    // Display today's word
-    function showTodayWord() {
-      const idx = getTodayIndex();
-      const w = words[idx];
-      document.getElementById('word').textContent = w.word;
-      document.getElementById('reading').textContent = w.reading;
-      document.getElementById('meaning').textContent = w.meaning;
-    }
+function checkQuizAnswer(btn, selected) {
+  quizTotal++;
+  const allBtns = document.querySelectorAll('#quiz-options .quiz-option');
+  allBtns.forEach(b => b.onclick = null);
 
-    // Quiz
-    function generateQuiz() {
-      const idx = Math.floor(Math.random() * words.length);
-      currentQuizWord = words[idx];
+  const resultEl = document.getElementById('quiz-result');
+  if (selected === currentQuizWord.meaning) {
+    quizCorrect++;
+    btn.classList.add('correct');
+    resultEl.textContent = '정답!';
+    resultEl.style.color = '#27ae60';
+  } else {
+    btn.classList.add('wrong');
+    allBtns.forEach(b => { if (b.textContent === currentQuizWord.meaning) b.classList.add('correct'); });
+    resultEl.textContent = `오답! 정답: ${currentQuizWord.meaning}`;
+    resultEl.style.color = '#e74c3c';
+  }
 
-      document.getElementById('quiz-question').textContent = currentQuizWord.word;
-      document.getElementById('quiz-result').classList.add('hidden');
-      document.getElementById('next-btn').classList.add('hidden');
+  resultEl.classList.remove('hidden');
+  document.getElementById('quiz-next').classList.remove('hidden');
+  document.getElementById('quiz-score').textContent = `${quizCorrect} / ${quizTotal} 정답`;
+}
 
-      // Generate 4 options
-      const options = [currentQuizWord.meaning];
-      while (options.length < 4) {
-        const rand = words[Math.floor(Math.random() * words.length)].meaning;
-        if (!options.includes(rand)) options.push(rand);
-      }
+// ============================================================
+// RENDER: Evening
+// ============================================================
+function renderEvening() {
+  const words = VOCAB_BANK[currentDay];
+  const g = GRAMMAR_BANK[currentDay];
 
-      // Shuffle
-      options.sort(() => Math.random() - 0.5);
+  // Review words
+  const rw = document.getElementById('review-words');
+  rw.innerHTML = words.map(w => {
+    const readingParts = w.reading.match(/^(.+?)\s*\(([^)]+)\)$/);
+    const romaji = readingParts ? readingParts[2] : '';
+    return `
+      <div class="review-word">
+        <div>
+          <div class="rw-jp">${w.jp}</div>
+          <div class="rw-romaji">${romaji}</div>
+        </div>
+        <div class="rw-ko">${w.meaning}</div>
+      </div>
+    `;
+  }).join('');
 
-      const container = document.getElementById('quiz-options');
-      container.innerHTML = '';
-      options.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.className = 'quiz-option';
-        btn.textContent = opt;
-        btn.onclick = () => checkAnswer(btn, opt);
-        container.appendChild(btn);
-      });
-    }
+  // Review grammar
+  const rg = document.getElementById('review-grammar');
+  let exHtml = g.examples.map(ex => `
+    <div class="grammar-example">
+      <div class="ex-jp">${ex.jp}</div>
+      <div class="ex-romaji">${ex.romaji}</div>
+      <div class="ex-ko">${ex.ko}</div>
+    </div>
+  `).join('');
+  rg.innerHTML = `
+    <div class="grammar-card">
+      <div class="grammar-title">${g.title}</div>
+      <div class="grammar-desc">${g.description}</div>
+      ${exHtml}
+    </div>
+  `;
 
-    function checkAnswer(btn, selected) {
-      totalCount++;
-      const allBtns = document.querySelectorAll('.quiz-option');
-      allBtns.forEach(b => b.onclick = null);
+  // Evening checklist
+  const items = [
+    { id: 'review_vocab', label: '단어 복습 완료' },
+    { id: 'review_grammar', label: '문법 복습 완료' },
+    { id: 'review_quiz', label: '퀴즈 다시 풀기 완료' },
+  ];
+  renderChecklistTo('evening-checklist', 'evening_' + getToday(), items);
+}
 
-      if (selected === currentQuizWord.meaning) {
-        correctCount++;
-        btn.classList.add('correct');
-        document.getElementById('quiz-result').textContent = '⭕ 정답!';
-        document.getElementById('quiz-result').style.color = '#27ae60';
-      } else {
-        btn.classList.add('wrong');
-        allBtns.forEach(b => {
-          if (b.textContent === currentQuizWord.meaning) b.classList.add('correct');
-        });
-        document.getElementById('quiz-result').textContent = `❌ 정답: ${currentQuizWord.meaning}`;
-        document.getElementById('quiz-result').style.color = '#e74c3c';
-      }
+// ============================================================
+// RENDER: Record
+// ============================================================
+function renderRecord() {
+  const record = loadRecord();
+  const dates = Object.keys(record).sort().reverse();
+  const total = dates.length;
 
-      document.getElementById('quiz-result').classList.remove('hidden');
-      document.getElementById('next-btn').classList.remove('hidden');
-      document.getElementById('score').textContent = `${correctCount} / ${totalCount} 정답`;
-    }
+  const summary = document.getElementById('record-summary');
+  summary.innerHTML = `
+    <p style="font-size:2rem; font-weight:700; color:#e74c3c; text-align:center;">${total}일</p>
+    <p style="text-align:center; color:#888; font-size:0.85rem;">총 학습 완료 일수</p>
+    <div style="margin-top:0.8rem;">
+      ${dates.slice(0, 10).map(d => `<div style="padding:0.3rem 0; border-bottom:1px solid #f0f0f0; font-size:0.85rem; color:#666;">${d}</div>`).join('')}
+    </div>
+  `;
 
-    function nextQuiz() {
-      generateQuiz();
-    }
+  // Weekly stats
+  const today = new Date();
+  const dayOfWeek = today.getDay();
+  let weekDone = 0;
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - dayOfWeek + i);
+    if (record[d.toISOString().slice(0, 10)]) weekDone++;
+  }
 
-    // Init
-    showDate();
-    showTodayWord();
-    generateQuiz();
-  </script>
+  const pct = Math.round((weekDone / 7) * 100);
+  document.getElementById('record-weekly').innerHTML = `
+    <div style="text-align:center;">
+      <div style="font-size:2rem; font-weight:700; color:${pct >= 70 ? '#27ae60' : '#e74c3c'}">${pct}%</div>
+      <p style="color:#888; font-size:0.85rem;">${weekDone}/7일 완료</p>
+      <div style="background:#eee; border-radius:10px; height:10px; margin-top:0.5rem; overflow:hidden;">
+        <div style="background:${pct >= 70 ? '#27ae60' : '#e74c3c'}; height:100%; width:${pct}%; border-radius:10px; transition:width 0.3s;"></div>
+      </div>
+    </div>
+  `;
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  // Set initial day based on day of week (Mon=0 ... Sun=6 mapped to Day1-7)
+  const dow = getDayOfWeek();
+  currentDay = dow === 0 ? 6 : dow - 1; // Mon=0, Tue=1, ..., Sun=6
+
+  renderHeaderDate();
+  renderMorningBriefing();
+}
+
+init();
+</script>
 </body>
 </html>
