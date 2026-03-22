@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日本語 Daily Study</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', -apple-system, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+      width: 100%;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    header h1 { font-size: 1.8rem; }
+    header p { opacity: 0.9; margin-top: 0.3rem; font-size: 0.95rem; }
+
+    main {
+      max-width: 600px;
+      width: 100%;
+      padding: 1.5rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .card:hover { transform: translateY(-2px); }
+
+    .word { font-size: 2.5rem; font-weight: bold; color: #e74c3c; }
+    .reading { font-size: 1.3rem; color: #888; margin: 0.5rem 0; }
+    .meaning { font-size: 1.1rem; color: #555; }
+
+    .btn {
+      display: inline-block;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: background 0.2s;
+    }
+
+    .btn:hover { background: #c0392b; }
+
+    .date {
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-bottom: 0.5rem;
+    }
+
+    #quiz-section { margin-top: 1rem; }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .quiz-option {
+      padding: 0.8rem;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+
+    .quiz-option:hover { border-color: #e74c3c; }
+    .quiz-option.correct { border-color: #27ae60; background: #eafaf1; }
+    .quiz-option.wrong { border-color: #e74c3c; background: #fdecea; }
+
+    .score { font-size: 1.2rem; font-weight: bold; color: #e74c3c; }
+
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🇯🇵 日本語 Daily Study</h1>
+    <p>毎日の日本語学習</p>
+  </header>
+
+  <main>
+    <div class="date" id="today-date"></div>
+
+    <!-- Today's Word -->
+    <div class="card">
+      <h2 style="margin-bottom: 1rem; color: #666;">📖 오늘의 단어</h2>
+      <div class="word" id="word"></div>
+      <div class="reading" id="reading"></div>
+      <div class="meaning" id="meaning"></div>
+    </div>
+
+    <!-- Quiz Section -->
+    <div class="card" id="quiz-section">
+      <h2 style="margin-bottom: 0.5rem; color: #666;">🧠 퀴즈</h2>
+      <p id="quiz-question" style="font-size: 1.8rem; font-weight: bold; color: #e74c3c;"></p>
+      <div class="quiz-options" id="quiz-options"></div>
+      <p id="quiz-result" style="margin-top: 1rem; font-weight: bold;" class="hidden"></p>
+      <button class="btn hidden" id="next-btn" onclick="nextQuiz()">다음 문제</button>
+      <div class="score" id="score" style="margin-top: 0.8rem;"></div>
+    </div>
+  </main>
+
+  <script>
+    // Word database
+    const words = [
+      { word: "勉強", reading: "べんきょう", meaning: "공부" },
+      { word: "先生", reading: "せんせい", meaning: "선생님" },
+      { word: "学校", reading: "がっこう", meaning: "학교" },
+      { word: "友達", reading: "ともだち", meaning: "친구" },
+      { word: "天気", reading: "てんき", meaning: "날씨" },
+      { word: "食べ物", reading: "たべもの", meaning: "음식" },
+      { word: "飲み物", reading: "のみもの", meaning: "음료" },
+      { word: "電車", reading: "でんしゃ", meaning: "전철" },
+      { word: "図書館", reading: "としょかん", meaning: "도서관" },
+      { word: "病院", reading: "びょういん", meaning: "병원" },
+      { word: "会社", reading: "かいしゃ", meaning: "회사" },
+      { word: "仕事", reading: "しごと", meaning: "일, 직업" },
+      { word: "散歩", reading: "さんぽ", meaning: "산책" },
+      { word: "旅行", reading: "りょこう", meaning: "여행" },
+      { word: "映画", reading: "えいが", meaning: "영화" },
+      { word: "音楽", reading: "おんがく", meaning: "음악" },
+      { word: "写真", reading: "しゃしん", meaning: "사진" },
+      { word: "新聞", reading: "しんぶん", meaning: "신문" },
+      { word: "手紙", reading: "てがみ", meaning: "편지" },
+      { word: "約束", reading: "やくそく", meaning: "약속" },
+      { word: "練習", reading: "れんしゅう", meaning: "연습" },
+      { word: "準備", reading: "じゅんび", meaning: "준비" },
+      { word: "質問", reading: "しつもん", meaning: "질문" },
+      { word: "説明", reading: "せつめい", meaning: "설명" },
+      { word: "経験", reading: "けいけん", meaning: "경험" },
+      { word: "意味", reading: "いみ", meaning: "의미" },
+      { word: "気持ち", reading: "きもち", meaning: "기분, 감정" },
+      { word: "大切", reading: "たいせつ", meaning: "소중한" },
+      { word: "簡単", reading: "かんたん", meaning: "간단한" },
+      { word: "便利", reading: "べんり", meaning: "편리한" },
+    ];
+
+    let correctCount = 0;
+    let totalCount = 0;
+    let currentQuizWord = null;
+
+    // Get today's word based on date
+    function getTodayIndex() {
+      const today = new Date();
+      const start = new Date(2025, 0, 1);
+      const diff = Math.floor((today - start) / (1000 * 60 * 60 * 24));
+      return diff % words.length;
+    }
+
+    // Display today's date
+    function showDate() {
+      const today = new Date();
+      const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+      document.getElementById('today-date').textContent = today.toLocaleDateString('ja-JP', options);
+    }
+
+    // Display today's word
+    function showTodayWord() {
+      const idx = getTodayIndex();
+      const w = words[idx];
+      document.getElementById('word').textContent = w.word;
+      document.getElementById('reading').textContent = w.reading;
+      document.getElementById('meaning').textContent = w.meaning;
+    }
+
+    // Quiz
+    function generateQuiz() {
+      const idx = Math.floor(Math.random() * words.length);
+      currentQuizWord = words[idx];
+
+      document.getElementById('quiz-question').textContent = currentQuizWord.word;
+      document.getElementById('quiz-result').classList.add('hidden');
+      document.getElementById('next-btn').classList.add('hidden');
+
+      // Generate 4 options
+      const options = [currentQuizWord.meaning];
+      while (options.length < 4) {
+        const rand = words[Math.floor(Math.random() * words.length)].meaning;
+        if (!options.includes(rand)) options.push(rand);
+      }
+
+      // Shuffle
+      options.sort(() => Math.random() - 0.5);
+
+      const container = document.getElementById('quiz-options');
+      container.innerHTML = '';
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(btn, opt);
+        container.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(btn, selected) {
+      totalCount++;
+      const allBtns = document.querySelectorAll('.quiz-option');
+      allBtns.forEach(b => b.onclick = null);
+
+      if (selected === currentQuizWord.meaning) {
+        correctCount++;
+        btn.classList.add('correct');
+        document.getElementById('quiz-result').textContent = '⭕ 정답!';
+        document.getElementById('quiz-result').style.color = '#27ae60';
+      } else {
+        btn.classList.add('wrong');
+        allBtns.forEach(b => {
+          if (b.textContent === currentQuizWord.meaning) b.classList.add('correct');
+        });
+        document.getElementById('quiz-result').textContent = `❌ 정답: ${currentQuizWord.meaning}`;
+        document.getElementById('quiz-result').style.color = '#e74c3c';
+      }
+
+      document.getElementById('quiz-result').classList.remove('hidden');
+      document.getElementById('next-btn').classList.remove('hidden');
+      document.getElementById('score').textContent = `${correctCount} / ${totalCount} 정답`;
+    }
+
+    function nextQuiz() {
+      generateQuiz();
+    }
+
+    // Init
+    showDate();
+    showTodayWord();
+    generateQuiz();
+  </script>
+</body>
+</html>
