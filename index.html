@@ -468,61 +468,61 @@
 // DATA: VOCAB_BANK — 7 Day-sets, 5 words each = 35 words
 // ============================================================
 const VOCAB_BANK = [
-  // Day 1: 인사/기본 표현
+  // Day 0: 인사/기본 표현
   [
     { jp: "おはよう", reading: "おはよう (ohayou)", meaning: "좋은 아침", example: "おはようございます。", exampleRomaji: "ohayou gozaimasu.", exampleKo: "좋은 아침입니다." },
     { jp: "ありがとう", reading: "ありがとう (arigatou)", meaning: "감사합니다", example: "ありがとうございます。", exampleRomaji: "arigatou gozaimasu.", exampleKo: "감사합니다." },
-    { jp: "すみません", reading: "すみません (sumimasen)", meaning: "죄송합니다 / 실례합니다", example: "すみません、駅はどこですか。", exampleRomaji: "sumimasen, eki wa doko desu ka.", exampleKo: "실례합니다, 역은 어디인가요?" },
-    { jp: "こんにちは", reading: "こんにちは (konnichiwa)", meaning: "안녕하세요 (낮)", example: "こんにちは、元気ですか。", exampleRomaji: "konnichiwa, genki desu ka.", exampleKo: "안녕하세요, 잘 지내세요?" },
-    { jp: "さようなら", reading: "さようなら (sayounara)", meaning: "안녕히 가세요", example: "さようなら、また明日。", exampleRomaji: "sayounara, mata ashita.", exampleKo: "안녕히, 내일 또 봐요." },
+    { jp: "すみません", reading: "すみません (sumimasen)", meaning: "실례합니다 / 죄송합니다", example: "すみません、駅はどこですか。", exampleRomaji: "sumimasen, eki wa doko desu ka.", exampleKo: "실례합니다, 역은 어디인가요?" },
+    { jp: "食べる", reading: "たべる (taberu)", meaning: "먹다", example: "朝ごはんを食べる。", exampleRomaji: "asagohan wo taberu.", exampleKo: "아침밥을 먹다." },
+    { jp: "飲む", reading: "のむ (nomu)", meaning: "마시다", example: "水を飲む。", exampleRomaji: "mizu wo nomu.", exampleKo: "물을 마시다." },
   ],
-  // Day 2: 학교/공부
+  // Day 1: 기본 동사
   [
-    { jp: "学校", reading: "がっこう (gakkou)", meaning: "학교", example: "学校に行きます。", exampleRomaji: "gakkou ni ikimasu.", exampleKo: "학교에 갑니다." },
-    { jp: "先生", reading: "せんせい (sensei)", meaning: "선생님", example: "先生は優しいです。", exampleRomaji: "sensei wa yasashii desu.", exampleKo: "선생님은 친절합니다." },
-    { jp: "勉強", reading: "べんきょう (benkyou)", meaning: "공부", example: "日本語を勉強します。", exampleRomaji: "nihongo wo benkyou shimasu.", exampleKo: "일본어를 공부합니다." },
-    { jp: "学生", reading: "がくせい (gakusei)", meaning: "학생", example: "私は学生です。", exampleRomaji: "watashi wa gakusei desu.", exampleKo: "저는 학생입니다." },
-    { jp: "質問", reading: "しつもん (shitsumon)", meaning: "질문", example: "質問がありますか。", exampleRomaji: "shitsumon ga arimasu ka.", exampleKo: "질문이 있습니까?" },
+    { jp: "行く", reading: "いく (iku)", meaning: "가다", example: "学校に行く。", exampleRomaji: "gakkou ni iku.", exampleKo: "학교에 가다." },
+    { jp: "来る", reading: "くる (kuru)", meaning: "오다", example: "友達が来る。", exampleRomaji: "tomodachi ga kuru.", exampleKo: "친구가 오다." },
+    { jp: "見る", reading: "みる (miru)", meaning: "보다", example: "テレビを見る。", exampleRomaji: "terebi wo miru.", exampleKo: "텔레비전을 보다." },
+    { jp: "聞く", reading: "きく (kiku)", meaning: "듣다 / 묻다", example: "音楽を聞く。", exampleRomaji: "ongaku wo kiku.", exampleKo: "음악을 듣다." },
+    { jp: "書く", reading: "かく (kaku)", meaning: "쓰다", example: "手紙を書く。", exampleRomaji: "tegami wo kaku.", exampleKo: "편지를 쓰다." },
   ],
-  // Day 3: 음식/음료
+  // Day 2: 동사/형용사
   [
-    { jp: "食べ物", reading: "たべもの (tabemono)", meaning: "음식", example: "好きな食べ物は何ですか。", exampleRomaji: "suki na tabemono wa nan desu ka.", exampleKo: "좋아하는 음식은 뭔가요?" },
-    { jp: "飲み物", reading: "のみもの (nomimono)", meaning: "음료", example: "飲み物を買います。", exampleRomaji: "nomimono wo kaimasu.", exampleKo: "음료를 삽니다." },
-    { jp: "水", reading: "みず (mizu)", meaning: "물", example: "水をください。", exampleRomaji: "mizu wo kudasai.", exampleKo: "물을 주세요." },
-    { jp: "美味しい", reading: "おいしい (oishii)", meaning: "맛있는", example: "この料理は美味しいです。", exampleRomaji: "kono ryouri wa oishii desu.", exampleKo: "이 요리는 맛있습니다." },
-    { jp: "食べる", reading: "たべる (taberu)", meaning: "먹다", example: "朝ごはんを食べます。", exampleRomaji: "asagohan wo tabemasu.", exampleKo: "아침밥을 먹습니다." },
+    { jp: "読む", reading: "よむ (yomu)", meaning: "읽다", example: "本を読む。", exampleRomaji: "hon wo yomu.", exampleKo: "책을 읽다." },
+    { jp: "話す", reading: "はなす (hanasu)", meaning: "말하다", example: "日本語を話す。", exampleRomaji: "nihongo wo hanasu.", exampleKo: "일본어를 말하다." },
+    { jp: "買う", reading: "かう (kau)", meaning: "사다", example: "パンを買う。", exampleRomaji: "pan wo kau.", exampleKo: "빵을 사다." },
+    { jp: "大きい", reading: "おおきい (ookii)", meaning: "크다", example: "大きい犬がいる。", exampleRomaji: "ookii inu ga iru.", exampleKo: "큰 개가 있다." },
+    { jp: "小さい", reading: "ちいさい (chiisai)", meaning: "작다", example: "小さい猫が好きです。", exampleRomaji: "chiisai neko ga suki desu.", exampleKo: "작은 고양이를 좋아합니다." },
   ],
-  // Day 4: 장소/교통
+  // Day 3: 형용사
   [
-    { jp: "駅", reading: "えき (eki)", meaning: "역", example: "駅はどこですか。", exampleRomaji: "eki wa doko desu ka.", exampleKo: "역은 어디입니까?" },
-    { jp: "電車", reading: "でんしゃ (densha)", meaning: "전철", example: "電車で会社に行きます。", exampleRomaji: "densha de kaisha ni ikimasu.", exampleKo: "전철로 회사에 갑니다." },
-    { jp: "病院", reading: "びょういん (byouin)", meaning: "병원", example: "病院に行きたいです。", exampleRomaji: "byouin ni ikitai desu.", exampleKo: "병원에 가고 싶습니다." },
-    { jp: "図書館", reading: "としょかん (toshokan)", meaning: "도서관", example: "図書館で本を読みます。", exampleRomaji: "toshokan de hon wo yomimasu.", exampleKo: "도서관에서 책을 읽습니다." },
-    { jp: "会社", reading: "かいしゃ (kaisha)", meaning: "회사", example: "会社は九時からです。", exampleRomaji: "kaisha wa kuji kara desu.", exampleKo: "회사는 9시부터입니다." },
+    { jp: "新しい", reading: "あたらしい (atarashii)", meaning: "새롭다", example: "新しい靴を買った。", exampleRomaji: "atarashii kutsu wo katta.", exampleKo: "새 신발을 샀다." },
+    { jp: "古い", reading: "ふるい (furui)", meaning: "오래되다", example: "古い家に住んでいる。", exampleRomaji: "furui ie ni sundeiru.", exampleKo: "오래된 집에 살고 있다." },
+    { jp: "高い", reading: "たかい (takai)", meaning: "높다 / 비싸다", example: "このバッグは高い。", exampleRomaji: "kono baggu wa takai.", exampleKo: "이 가방은 비싸다." },
+    { jp: "安い", reading: "やすい (yasui)", meaning: "싸다", example: "安いレストランを探す。", exampleRomaji: "yasui resutoran wo sagasu.", exampleKo: "싼 식당을 찾다." },
+    { jp: "美味しい", reading: "おいしい (oishii)", meaning: "맛있다", example: "このラーメンは美味しい。", exampleRomaji: "kono raamen wa oishii.", exampleKo: "이 라멘은 맛있다." },
   ],
-  // Day 5: 일상/취미
+  // Day 4: 명사 (일상)
   [
-    { jp: "仕事", reading: "しごと (shigoto)", meaning: "일, 직업", example: "仕事は楽しいです。", exampleRomaji: "shigoto wa tanoshii desu.", exampleKo: "일은 즐겁습니다." },
-    { jp: "散歩", reading: "さんぽ (sanpo)", meaning: "산책", example: "公園を散歩します。", exampleRomaji: "kouen wo sanpo shimasu.", exampleKo: "공원을 산책합니다." },
-    { jp: "映画", reading: "えいが (eiga)", meaning: "영화", example: "映画を見ます。", exampleRomaji: "eiga wo mimasu.", exampleKo: "영화를 봅니다." },
-    { jp: "音楽", reading: "おんがく (ongaku)", meaning: "음악", example: "音楽を聞きます。", exampleRomaji: "ongaku wo kikimasu.", exampleKo: "음악을 듣습니다." },
-    { jp: "旅行", reading: "りょこう (ryokou)", meaning: "여행", example: "日本に旅行に行きます。", exampleRomaji: "nihon ni ryokou ni ikimasu.", exampleKo: "일본에 여행을 갑니다." },
+    { jp: "天気", reading: "てんき (tenki)", meaning: "날씨", example: "今日はいい天気です。", exampleRomaji: "kyou wa ii tenki desu.", exampleKo: "오늘은 좋은 날씨입니다." },
+    { jp: "時間", reading: "じかん (jikan)", meaning: "시간", example: "時間がない。", exampleRomaji: "jikan ga nai.", exampleKo: "시간이 없다." },
+    { jp: "友達", reading: "ともだち (tomodachi)", meaning: "친구", example: "友達と遊ぶ。", exampleRomaji: "tomodachi to asobu.", exampleKo: "친구와 놀다." },
+    { jp: "仕事", reading: "しごと (shigoto)", meaning: "일 / 직장", example: "仕事が忙しい。", exampleRomaji: "shigoto ga isogashii.", exampleKo: "일이 바쁘다." },
+    { jp: "勉強", reading: "べんきょう (benkyou)", meaning: "공부", example: "日本語を勉強する。", exampleRomaji: "nihongo wo benkyou suru.", exampleKo: "일본어를 공부하다." },
   ],
-  // Day 6: 감정/형용사
+  // Day 5: 명사 (장소/취미)
   [
-    { jp: "大切", reading: "たいせつ (taisetsu)", meaning: "소중한", example: "友達は大切です。", exampleRomaji: "tomodachi wa taisetsu desu.", exampleKo: "친구는 소중합니다." },
-    { jp: "簡単", reading: "かんたん (kantan)", meaning: "간단한", example: "この問題は簡単です。", exampleRomaji: "kono mondai wa kantan desu.", exampleKo: "이 문제는 간단합니다." },
-    { jp: "便利", reading: "べんり (benri)", meaning: "편리한", example: "スマホは便利です。", exampleRomaji: "sumaho wa benri desu.", exampleKo: "스마트폰은 편리합니다." },
-    { jp: "気持ち", reading: "きもち (kimochi)", meaning: "기분, 감정", example: "気持ちがいいです。", exampleRomaji: "kimochi ga ii desu.", exampleKo: "기분이 좋습니다." },
-    { jp: "楽しい", reading: "たのしい (tanoshii)", meaning: "즐거운", example: "パーティーは楽しいです。", exampleRomaji: "paatii wa tanoshii desu.", exampleKo: "파티는 즐겁습니다." },
+    { jp: "電車", reading: "でんしゃ (densha)", meaning: "전철", example: "電車で会社に行く。", exampleRomaji: "densha de kaisha ni iku.", exampleKo: "전철로 회사에 가다." },
+    { jp: "病院", reading: "びょういん (byouin)", meaning: "병원", example: "病院に行きたくない。", exampleRomaji: "byouin ni ikitakunai.", exampleKo: "병원에 가고 싶지 않다." },
+    { jp: "映画", reading: "えいが (eiga)", meaning: "영화", example: "映画を見に行こう。", exampleRomaji: "eiga wo mi ni ikou.", exampleKo: "영화 보러 가자." },
+    { jp: "音楽", reading: "おんがく (ongaku)", meaning: "음악", example: "音楽が大好きです。", exampleRomaji: "ongaku ga daisuki desu.", exampleKo: "음악을 정말 좋아합니다." },
+    { jp: "写真", reading: "しゃしん (shashin)", meaning: "사진", example: "写真を撮ってください。", exampleRomaji: "shashin wo totte kudasai.", exampleKo: "사진을 찍어 주세요." },
   ],
-  // Day 7: 사람/관계
+  // Day 6: 계절/인사
   [
-    { jp: "友達", reading: "ともだち (tomodachi)", meaning: "친구", example: "友達に会います。", exampleRomaji: "tomodachi ni aimasu.", exampleKo: "친구를 만납니다." },
-    { jp: "家族", reading: "かぞく (kazoku)", meaning: "가족", example: "家族は四人です。", exampleRomaji: "kazoku wa yonin desu.", exampleKo: "가족은 4명입니다." },
-    { jp: "約束", reading: "やくそく (yakusoku)", meaning: "약속", example: "明日の約束があります。", exampleRomaji: "ashita no yakusoku ga arimasu.", exampleKo: "내일 약속이 있습니다." },
-    { jp: "名前", reading: "なまえ (namae)", meaning: "이름", example: "お名前は何ですか。", exampleRomaji: "onamae wa nan desu ka.", exampleKo: "이름이 뭔가요?" },
-    { jp: "電話", reading: "でんわ (denwa)", meaning: "전화", example: "電話をかけます。", exampleRomaji: "denwa wo kakemasu.", exampleKo: "전화를 겁니다." },
+    { jp: "春", reading: "はる (haru)", meaning: "봄", example: "春は桜がきれいです。", exampleRomaji: "haru wa sakura ga kirei desu.", exampleKo: "봄에는 벚꽃이 예쁩니다." },
+    { jp: "夏", reading: "なつ (natsu)", meaning: "여름", example: "夏は暑いです。", exampleRomaji: "natsu wa atsui desu.", exampleKo: "여름은 덥습니다." },
+    { jp: "秋", reading: "あき (aki)", meaning: "가을", example: "秋の紅葉が好きです。", exampleRomaji: "aki no kouyou ga suki desu.", exampleKo: "가을 단풍을 좋아합니다." },
+    { jp: "冬", reading: "ふゆ (fuyu)", meaning: "겨울", example: "冬は寒いです。", exampleRomaji: "fuyu wa samui desu.", exampleKo: "겨울은 춥습니다." },
+    { jp: "元気", reading: "げんき (genki)", meaning: "건강한 / 활기찬", example: "お元気ですか。", exampleRomaji: "ogenki desu ka.", exampleKo: "잘 지내시나요?" },
   ],
 ];
 
@@ -530,69 +530,34 @@ const VOCAB_BANK = [
 // DATA: GRAMMAR_BANK — 7 grammars, 2 examples each = 14 examples
 // ============================================================
 const GRAMMAR_BANK = [
-  {
-    title: "~です (desu)",
-    structure: "명사 + です(desu)",
-    description: "~입니다. 정중한 긍정 표현",
-    examples: [
-      { jp: "学生です。", romaji: "gakusei desu.", ko: "학생입니다." },
-      { jp: "日本人です。", romaji: "nihonjin desu.", ko: "일본인입니다." },
-    ]
-  },
-  {
-    title: "~ます (masu)",
-    structure: "동사ます형 + ます(masu)",
-    description: "정중한 동사 표현 (현재/미래)",
-    examples: [
-      { jp: "毎日勉強します。", romaji: "mainichi benkyou shimasu.", ko: "매일 공부합니다." },
-      { jp: "朝ごはんを食べます。", romaji: "asagohan wo tabemasu.", ko: "아침밥을 먹습니다." },
-    ]
-  },
-  {
-    title: "~ません (masen)",
-    structure: "동사ます형 + ません(masen)",
-    description: "정중한 부정 표현",
-    examples: [
-      { jp: "肉を食べません。", romaji: "niku wo tabemasen.", ko: "고기를 먹지 않습니다." },
-      { jp: "お酒を飲みません。", romaji: "osake wo nomimasen.", ko: "술을 마시지 않습니다." },
-    ]
-  },
-  {
-    title: "~がある/いる (ga aru/iru)",
-    structure: "명사 + がある(ga aru) [사물] / がいる(ga iru) [생물]",
-    description: "~이/가 있다",
-    examples: [
-      { jp: "時間があります。", romaji: "jikan ga arimasu.", ko: "시간이 있습니다." },
-      { jp: "猫がいます。", romaji: "neko ga imasu.", ko: "고양이가 있습니다." },
-    ]
-  },
-  {
-    title: "~たい (tai)",
-    structure: "동사ます형 + たい(tai)",
-    description: "~하고 싶다",
-    examples: [
-      { jp: "日本に行きたいです。", romaji: "nihon ni ikitai desu.", ko: "일본에 가고 싶습니다." },
-      { jp: "寿司を食べたいです。", romaji: "sushi wo tabetai desu.", ko: "초밥을 먹고 싶습니다." },
-    ]
-  },
-  {
-    title: "~てください (te kudasai)",
-    structure: "동사て형 + ください(kudasai)",
-    description: "~해 주세요 (부탁)",
-    examples: [
-      { jp: "ここに書いてください。", romaji: "koko ni kaite kudasai.", ko: "여기에 써 주세요." },
-      { jp: "もう一度言ってください。", romaji: "mou ichido itte kudasai.", ko: "한 번 더 말해 주세요." },
-    ]
-  },
-  {
-    title: "~から (kara)",
-    structure: "문장/명사 + から(kara)",
-    description: "~부터 / ~때문에",
-    examples: [
-      { jp: "九時から始まります。", romaji: "kuji kara hajimarimasu.", ko: "9시부터 시작합니다." },
-      { jp: "暑いから窓を開けます。", romaji: "atsui kara mado wo akemasu.", ko: "더우니까 창문을 엽니다." },
-    ]
-  },
+  { title: "〜です (desu) / 〜ます (masu)", meaning: "정중한 문장 만들기 (기본 경어)", structure: "명사 + です(desu) / 동사ます형 + ます(masu)", examples: [
+    { jp: "学生です。", romaji: "gakusei desu.", ko: "학생입니다." },
+    { jp: "毎日勉強します。", romaji: "mainichi benkyou shimasu.", ko: "매일 공부합니다." }
+  ]},
+  { title: "〜を (wo) + 동사", meaning: "목적어를 나타내는 조사 を", structure: "명사 + を(wo) + 타동사", examples: [
+    { jp: "りんごを食べます。", romaji: "ringo wo tabemasu.", ko: "사과를 먹습니다." },
+    { jp: "本を読みます。", romaji: "hon wo yomimasu.", ko: "책을 읽습니다." }
+  ]},
+  { title: "〜に行く (ni iku)", meaning: "~하러 가다 (목적 표현)", structure: "동사ます형(ます 제거) + に行く(ni iku)", examples: [
+    { jp: "映画を見に行く。", romaji: "eiga wo mi ni iku.", ko: "영화를 보러 가다." },
+    { jp: "ご飯を食べに行こう。", romaji: "gohan wo tabe ni ikou.", ko: "밥을 먹으러 가자." }
+  ]},
+  { title: "〜たい (tai)", meaning: "~하고 싶다 (희망 표현)", structure: "동사ます형(ます 제거) + たい(tai)", examples: [
+    { jp: "日本に行きたい。", romaji: "nihon ni ikitai.", ko: "일본에 가고 싶다." },
+    { jp: "寿司が食べたい。", romaji: "sushi ga tabetai.", ko: "초밥이 먹고 싶다." }
+  ]},
+  { title: "〜てください (te kudasai)", meaning: "~해 주세요 (부탁 표현)", structure: "동사て형 + ください(kudasai)", examples: [
+    { jp: "ここに名前を書いてください。", romaji: "koko ni namae wo kaite kudasai.", ko: "여기에 이름을 써 주세요." },
+    { jp: "ちょっと待ってください。", romaji: "chotto matte kudasai.", ko: "잠깐 기다려 주세요." }
+  ]},
+  { title: "〜ている (te iru)", meaning: "~하고 있다 (진행/상태)", structure: "동사て형 + いる(iru)", examples: [
+    { jp: "今、本を読んでいる。", romaji: "ima, hon wo yondeiru.", ko: "지금 책을 읽고 있다." },
+    { jp: "東京に住んでいます。", romaji: "toukyou ni sundeimasu.", ko: "도쿄에 살고 있습니다." }
+  ]},
+  { title: "〜から (kara) / 〜ので (node)", meaning: "~때문에 / ~이니까 (이유)", structure: "문장 + から(kara) / 문장 + ので(node)", examples: [
+    { jp: "暑いから、窓を開けます。", romaji: "atsui kara, mado wo akemasu.", ko: "더우니까 창문을 엽니다." },
+    { jp: "疲れたので、休みます。", romaji: "tsukareta node, yasumimasu.", ko: "피곤하므로 쉽니다." }
+  ]},
 ];
 
 // ============================================================
@@ -682,7 +647,7 @@ function renderMorningBriefing() {
   el.innerHTML = `
     <p>오늘은 <strong>Day ${currentDay + 1}</strong>입니다.</p>
     <p style="margin-top:0.4rem">오늘 배울 단어: ${wordList}</p>
-    <p style="margin-top:0.4rem">오늘 배울 문법: <span class="highlight">${dayGrammar.title}</span> — ${dayGrammar.description}</p>
+    <p style="margin-top:0.4rem">오늘 배울 문법: <span class="highlight">${dayGrammar.title}</span> — ${dayGrammar.meaning}</p>
     <p style="margin-top:0.6rem; color:#999; font-size:0.8rem">학습 탭에서 단어와 문법을 공부하고, 저녁에 복습하세요!</p>
   `;
 
@@ -857,7 +822,7 @@ function renderGrammar() {
     <div class="grammar-card">
       <div class="grammar-title">${g.title}</div>
       <div class="grammar-structure">${g.structure}</div>
-      <div class="grammar-desc">${g.description}</div>
+      <div class="grammar-desc">${g.meaning}</div>
       ${examplesHtml}
     </div>
   `;
@@ -949,7 +914,7 @@ function renderEvening() {
   rg.innerHTML = `
     <div class="grammar-card">
       <div class="grammar-title">${g.title}</div>
-      <div class="grammar-desc">${g.description}</div>
+      <div class="grammar-desc">${g.meaning}</div>
       ${exHtml}
     </div>
   `;
